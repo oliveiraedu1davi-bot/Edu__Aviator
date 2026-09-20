@@ -1,0 +1,1186 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090d18">
+  <title>EDU AVIATOR</title>
+  <style>
+    :root {
+      --bg: #090d18;
+      --panel: #111827;
+      --panel-2: #151f31;
+      --line: #26344b;
+      --text: #edf4ff;
+      --muted: #91a1ba;
+      --cyan: #55d6ff;
+      --purple: #a78bfa;
+      --green: #53e3a6;
+      --yellow: #ffd166;
+      --red: #ff6b7a;
+      --shadow: 0 18px 50px rgba(0,0,0,.22);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% -5%, rgba(79,209,255,.12), transparent 28rem),
+        radial-gradient(circle at 95% 8%, rgba(167,139,250,.12), transparent 25rem),
+        var(--bg);
+      font: 14px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .wrap { width: 100%; max-width: 430px; min-width: 0; margin: 0 auto; padding: 15px 10px 32px; }
+    header { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; margin-bottom: 22px; }
+    .eyebrow { color: var(--cyan); font-weight: 800; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; }
+    h1 { font-size: clamp(24px, 5vw, 42px); margin: 5px 0 6px; letter-spacing: -.04em; }
+    h2 { font-size: 17px; margin: 0 0 14px; }
+    h3 { font-size: 13px; margin: 0 0 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+    p { margin: 0; color: var(--muted); }
+    .brand-mark { color: var(--cyan); }
+    .badge { padding: 7px 10px; border: 1px solid rgba(83,227,166,.3); color: var(--green); background: rgba(83,227,166,.08); border-radius: 99px; font-size: 11px; white-space: nowrap; font-weight: 700; }
+    .grid { display: grid; gap: 14px; }
+    .layout { grid-template-columns: minmax(0, 1fr); align-items: start; }
+    .panel { background: linear-gradient(145deg, rgba(21,31,49,.94), rgba(12,18,31,.96)); border: 1px solid var(--line); border-radius: 18px; padding: 18px; box-shadow: var(--shadow); }
+    .panel + .panel { margin-top: 14px; }
+    textarea, input, select {
+      width: 100%; color: var(--text); background: #0b1220; border: 1px solid var(--line); border-radius: 11px; outline: none;
+    }
+    textarea { min-height: 178px; padding: 14px; resize: vertical; }
+    textarea:focus, input:focus, select:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(85,214,255,.1); }
+    .field { display: grid; gap: 7px; }
+    label, .label { color: var(--muted); font-size: 12px; font-weight: 700; }
+    input, select { padding: 10px 11px; }
+    .controls { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .controls .wide { grid-column: 1 / -1; }
+    .quick { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 8px; }
+    .quick button, .chip {
+      border: 1px solid var(--line); background: #0b1220; color: var(--muted); padding: 7px 10px; border-radius: 9px; font-size: 12px;
+    }
+    .quick button.active, .quick button:hover { border-color: var(--cyan); color: var(--text); background: rgba(85,214,255,.1); }
+    .actions { display: flex; gap: 9px; flex-wrap: wrap; margin-top: 14px; }
+    .primary, .secondary, .danger {
+      border: 0; border-radius: 11px; padding: 12px 15px; font-weight: 800; color: #06111b;
+    }
+    .primary { background: linear-gradient(135deg, var(--cyan), #8ce8ff); flex: 1; min-width: 220px; }
+    .secondary { color: var(--text); border: 1px solid var(--line); background: #19253a; }
+    .danger { color: #ffdce0; border: 1px solid rgba(255,107,122,.35); background: rgba(255,107,122,.1); }
+    .notice { padding: 12px 13px; border-radius: 12px; background: rgba(255,209,102,.08); border: 1px solid rgba(255,209,102,.22); color: #ffe6a0; font-size: 12px; margin-top: 14px; }
+    .status { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .status span { color: var(--muted); background: #0b1220; border: 1px solid var(--line); padding: 6px 9px; border-radius: 8px; font-size: 12px; }
+    .status b { color: var(--text); }
+    .metrics { grid-template-columns: repeat(4, minmax(0,1fr)); margin: 14px 0; }
+    .metric { min-height: 105px; padding: 15px; border: 1px solid var(--line); border-radius: 14px; background: rgba(17,24,39,.75); }
+    .metric .value { font-size: 25px; font-weight: 850; margin-top: 10px; letter-spacing: -.04em; }
+    .metric .caption { color: var(--muted); font-size: 11px; }
+    .metric.cyan .value { color: var(--cyan); }
+    .metric.purple .value { color: var(--purple); }
+    .metric.green .value { color: var(--green); }
+    .metric.yellow .value { color: var(--yellow); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 650px; }
+    th, td { padding: 12px 10px; border-bottom: 1px solid rgba(38,52,75,.7); text-align: left; white-space: nowrap; }
+    th { color: var(--muted); text-transform: uppercase; font-size: 10px; letter-spacing: .08em; }
+    td { font-size: 13px; }
+    .score { color: var(--cyan); font-weight: 850; }
+    .confidence { display: inline-flex; padding: 4px 7px; border-radius: 6px; font-size: 10px; font-weight: 800; }
+    .high { color: #8affcc; background: rgba(83,227,166,.12); }
+    .medium { color: #ffe6a0; background: rgba(255,209,102,.12); }
+    .low { color: #ffb3bc; background: rgba(255,107,122,.12); }
+    .empty { padding: 28px 10px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 12px; }
+    .details { display: grid; gap: 10px; }
+    .detail { padding: 12px; border-radius: 11px; background: #0b1220; border: 1px solid var(--line); }
+    .detail strong { color: var(--text); }
+    .detail small { display: block; color: var(--muted); margin-top: 3px; }
+    .track { display: flex; gap: 4px; min-width: max-content; align-items: end; height: 122px; padding: 8px 4px 20px; border-bottom: 1px solid var(--line); }
+    .bar { width: 12px; min-height: 7px; border-radius: 4px 4px 0 0; position: relative; opacity: .9; }
+    .bar:hover { opacity: 1; transform: scaleY(1.08); }
+    .bar.future { background: var(--cyan); height: 14px !important; border: 2px solid #b6f2ff; }
+    .bar::after { content: attr(data-time); position: absolute; top: calc(100% + 5px); left: 50%; transform: translateX(-50%); font-size: 9px; color: var(--muted); }
+    .legend { display: flex; flex-wrap: wrap; gap: 7px 11px; margin-top: 12px; }
+    .legend span { font-size: 10px; color: var(--muted); display: inline-flex; gap: 5px; align-items: center; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .subtle { color: var(--muted); font-size: 12px; }
+    .section-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 12px; }
+    .pill { color: var(--cyan); font-size: 11px; font-weight: 800; }
+    .warning { color: #ffb3bc; background: rgba(255,107,122,.08); border: 1px solid rgba(255,107,122,.2); padding: 12px; border-radius: 11px; font-size: 12px; margin-top: 12px; }
+     .signal-list { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 11px; overflow: hidden; background: #0b1220; }
+     .moment-status { border: 1px solid var(--line); border-radius: 14px; padding: 14px; background: rgba(11,18,32,.72); }
+    .moment-main { font-size: 22px; font-weight: 900; letter-spacing: -.02em; }
+    .moment-sub { color: var(--muted); margin-top: 4px; font-size: 12px; }
+    .moment-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 9px; margin-top: 10px; }
+    .moment-grid > div { padding: 10px; border: 1px solid rgba(38,52,75,.8); border-radius: 11px; background: rgba(17,24,39,.7); }
+    .moment-grid span { display: block; color: var(--muted); font-size: 11px; margin-bottom: 3px; }
+    .moment-grid b { font-size: 14px; }
+    .moment-status.good { border-color: rgba(83,227,166,.45); }
+    .moment-status.bad { border-color: rgba(255,117,143,.45); }
+    .moment-status.warn { border-color: rgba(255,209,102,.45); }
+    .protection-box { border: 1px solid var(--line); border-radius: 14px; padding: 14px; background: rgba(11,18,32,.72); }
+    .protection-title { font-size: 20px; font-weight: 900; }
+    .protection-sub { color: var(--muted); margin-top: 5px; font-size: 12px; line-height: 1.45; }
+    .protection-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 9px; margin-top: 10px; }
+    .protection-grid > div { padding: 10px; border: 1px solid rgba(38,52,75,.8); border-radius: 11px; background: rgba(17,24,39,.7); }
+    .protection-grid span { display:block; color:var(--muted); font-size:11px; margin-bottom:3px; }
+    .protection-grid b { font-size: 15px; }
+    .protection-box.good { border-color: rgba(83,227,166,.45); }
+    .protection-box.warn { border-color: rgba(255,209,102,.45); }
+    .protection-box.bad { border-color: rgba(255,117,143,.45); }
+    .verification-results { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 11px; overflow: hidden; background: #0b1220; }
+    .verification-row { display: grid; grid-template-columns: minmax(66px,1fr) minmax(58px,.7fr) minmax(58px,.6fr) minmax(72px,.8fr); align-items: center; gap: 8px; padding: 12px 13px; border-bottom: 1px solid rgba(38,52,75,.7); }
+    .verification-row:last-child { border-bottom: 0; }
+    .verification-time { color: var(--cyan); font-size: 18px; font-weight: 900; }
+    .verification-target { color: var(--text); font-weight: 800; }
+    .verification-result { justify-self: end; padding: 5px 9px; border-radius: 8px; font-size: 11px; font-weight: 900; }
+    .verification-result.win { color: var(--green); background: rgba(83,227,166,.12); border: 1px solid rgba(83,227,166,.3); }
+    .verification-result.loss { color: #ffb3bc; background: rgba(255,107,122,.10); border: 1px solid rgba(255,107,122,.25); }
+    .verification-result.waiting { color: #ffd86b; background: rgba(255,216,107,.10); border: 1px solid rgba(255,216,107,.25); }
+    .verification-meta { margin-top: 10px; display: grid; gap: 4px; color: var(--muted); font-size: 12px; }
+    .projection-row { width: 100%; display: grid; grid-template-columns: minmax(74px, 1fr) minmax(74px, 1fr) minmax(76px, .8fr); align-items: center; gap: 10px; padding: 11px 13px; border: 0; border-bottom: 1px solid rgba(38,52,75,.7); background: transparent; color: var(--text); text-align: left; cursor: pointer; }
+     .projection-row:last-child { border-bottom: 0; }
+     .projection-row:hover, .projection-row:active { background: rgba(85,214,255,.08); }
+     .projection-row span { min-width: 0; }
+     .projection-time { color: var(--cyan); font-size: 19px; font-weight: 900; letter-spacing: -.03em; }
+     .projection-target { color: var(--text); font-size: 13px; font-weight: 800; }
+     .projection-score { color: var(--yellow); font-size: 14px; font-weight: 850; text-align: right; }
+     .projection-head { display: grid; grid-template-columns: minmax(74px, 1fr) minmax(74px, 1fr) minmax(76px, .8fr); gap: 10px; padding: 7px 13px; color: var(--muted); background: rgba(17,24,39,.82); font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+     .projection-head span:last-child { text-align: right; }
+     .mobile-only-note { color: var(--muted); font-size: 11px; margin-top: 9px; }
+    .minute-filter { display:grid; gap:10px; }
+    .minute-filter-buttons { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+    .minute-filter-buttons button { min-width:0; min-height:58px; border:1px solid var(--line); background:#0b1220; color:var(--muted); border-radius:11px; padding:8px 6px; font-weight:800; }
+    .minute-filter-buttons button strong { display:block; color:var(--text); font-size:14px; }
+    .minute-filter-buttons button small { display:block; margin-top:2px; font-size:10px; }
+    .minute-filter-buttons button.active { color:var(--text); border-color:var(--cyan); background:rgba(85,214,255,.10); box-shadow:0 0 0 2px rgba(85,214,255,.05) inset; }
+    .minute-filter-buttons button[data-color="blue"].active { border-color:#3b82f6; }
+    .minute-filter-buttons button[data-color="purple"].active { border-color:#a855f7; }
+    .minute-filter-buttons button[data-color="pink"].active { border-color:#ec4899; }
+    .minute-filter-buttons button[data-color="all"].active { border-color:var(--red); }
+    .minute-digits { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; }
+    .minute-digit { width:100%; border:1px solid var(--line); border-radius:10px; background:#0b1220; color:var(--text); padding:10px 5px; text-align:center; cursor:pointer; }
+    .minute-digit .digit { display:block; font-size:18px; font-weight:900; }
+    .minute-digit .count { display:block; color:var(--muted); font-size:11px; margin-top:2px; }
+    .minute-digit .minute-state { display:block; color:var(--muted); font-size:9px; margin-top:4px; }
+    .minute-digit.best { border-color:var(--cyan); background:rgba(85,214,255,.08); }
+    .minute-digit.selected { box-shadow:0 0 0 2px rgba(85,214,255,.28) inset; border-color:var(--cyan); }
+    .minute-digit.selected .minute-state { color:var(--cyan); font-weight:800; }
+    .minute-filter-summary { color:var(--muted); font-size:12px; line-height:1.45; }
+    @media (max-width: 860px) {
+      .layout { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width: 520px) {
+      .wrap { width: min(100% - 18px, 1180px); padding-top: 15px; }
+      header { display: block; }
+      header .badge { display: inline-block; margin-top: 10px; }
+      .panel { padding: 14px; border-radius: 15px; }
+      .controls { grid-template-columns: 1fr; }
+      .controls .wide { grid-column: auto; }
+      .metrics { gap: 9px; }
+      .metric { min-height: 90px; padding: 12px; }
+      .metric .value { font-size: 21px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div>
+        <div class="eyebrow">Análise baseada em dados reais</div>
+        <h1><span class="brand-mark">🚀</span> EDU AVIATOR</h1>
+        <p>Análise estatística profissional baseada exclusivamente no histórico real informado.</p>
+      </div>
+      <div class="badge">● MODO TRANSPARENTE</div>
+    </header>
+
+    <section class="grid layout">
+      <div>
+        <section class="panel">
+          <div class="section-head"><h2>📥 Histórico real</h2><span class="pill">1–500 resultados</span></div>
+          <textarea id="historyInput" placeholder="Cole uma linha por resultado&#10;&#10;00:01 - 1.25x&#10;00:02 - 2.18x&#10;00:03 - 5.72x"></textarea>
+          <div class="status" id="parseStatus">
+            <span>Encontrados: <b>0</b></span><span>Válidos: <b>0</b></span><span>Ignorados: <b>0</b></span>
+          </div>
+          <div class="actions">
+            <button class="primary" id="analyzeBtn">🔮 ANALISAR HISTÓRICO</button>
+            <button class="secondary" id="loadBtn">📂 CARREGAR</button>
+            <button class="secondary" id="saveBtn">💾 SALVAR</button>
+            <button class="danger" id="clearBtn">🗑️ LIMPAR</button>
+          </div>
+          <div class="notice">⚠️ <strong>Importante:</strong> as janelas futuras são projeções estatísticas calculadas exclusivamente a partir do histórico inserido. Nenhum horário ou multiplicador é garantido. Este aplicativo não prevê o resultado real da próxima rodada.</div>
+        </section>
+
+        <section class="grid metrics" id="metrics">
+          <div class="metric cyan"><div class="caption">📊 RODADAS ANALISADAS</div><div class="value">0</div></div>
+          <div class="metric purple"><div class="caption">🔥 MAIOR MULTIPLICADOR</div><div class="value">—</div></div>
+          <div class="metric yellow"><div class="caption">🎯 OCORRÊNCIAS DO ALVO</div><div class="value">0</div></div>
+          <div class="metric green"><div class="caption">📈 FREQUÊNCIA HISTÓRICA</div><div class="value">—</div></div>
+        </section>
+
+        <section class="panel" id="momentPanel">
+          <div class="section-head"><h2>🧠 Analisador do momento</h2><span class="pill" id="momentLabel">Aguardando histórico</span></div>
+          <div id="momentStatus" class="moment-status">
+            <div class="moment-main" id="momentMain">Cole o histórico e clique em analisar.</div>
+            <div class="moment-sub" id="momentSub">O status será calculado somente a partir dos dados inseridos.</div>
+          </div>
+          <div class="moment-grid">
+            <div><span>🎯 Sinal</span><b id="momentSignal">—</b></div>
+            <div><span>📊 Ritmo recente</span><b id="momentRate">—</b></div>
+            <div><span>⏱️ Intervalo</span><b id="momentInterval">—</b></div>
+            <div><span>🔎 Leitura</span><b id="momentReading">—</b></div>
+          </div>
+        </section>
+
+        <section class="panel" id="protectionPanel">
+          <div class="section-head"><h2>🛡️ Proteção sugerida pelo histórico</h2><span class="pill" id="protectionLabel">Aguardando análise</span></div>
+          <div class="protection-box">
+            <div class="protection-title" id="protectionMain">Cole o histórico e analise para calcular.</div>
+            <div class="protection-sub" id="protectionSub">A sugestão usa a distribuição histórica dos multiplicadores. Não é garantia do próximo resultado.</div>
+          </div>
+          <div class="protection-grid">
+            <div><span>🛡️ Mão mais alta</span><b id="protectionHigh">—</b></div>
+            <div><span>🎯 Mão principal</span><b id="protectionLow">—</b></div>
+            <div><span>📊 Cobertura histórica</span><b id="protectionCoverage">—</b></div>
+            <div><span>🔁 Base usada</span><b id="protectionBase">—</b></div>
+          </div>
+        </section>
+
+
+      </div>
+
+      <aside>
+        <section class="panel">
+          <div class="section-head"><h2>⚙️ Configurar projeção</h2></div>
+          <div class="grid controls">
+            <div class="field wide">
+              <label>🎯 ALVO</label>
+              <select id="target">
+                <option value="2" selected>2X+</option><option value="2.5">2,50X+</option><option value="5">5X+</option><option value="10">10X+</option><option value="50">50X+</option><option value="100">100X+</option>
+                <option value="custom">Personalizado</option>
+                <option value="5-10">5X–10X</option><option value="10-50">10X–50X</option><option value="50-100">50X–100X</option>
+              </select>
+              <div class="field" id="customTargetField" style="display:none;margin-top:10px">
+                <label>🎯 ALVO PERSONALIZADO (X)</label>
+                <input id="customTarget" type="number" min="0.01" step="0.01" value="2.50" placeholder="Ex.: 3.75">
+              </div>
+            </div>
+            <div class="field">
+              <label>🔢 QUANTIDADE</label>
+              <input id="quantity" type="number" min="0" max="30" value="10">
+              <div class="quick" data-for="quantity"><button data-value="0">0</button><button data-value="5">5</button><button data-value="10" class="active">10</button><button data-value="15">15</button><button data-value="20">20</button><button data-value="30">30</button></div>
+            </div>
+            <div class="field">
+              <label>⏰ PERÍODO FUTURO</label>
+              <select id="period"><option value="15">15 minutos</option><option value="30">30 minutos</option><option value="60" selected>1 hora</option><option value="custom">Personalizado</option></select>
+            </div>
+            <div class="field" id="customPeriodField" style="display:none">
+              <label>MINUTOS PERSONALIZADOS</label><input id="customPeriod" type="number" min="1" max="1440" value="60">
+            </div>
+            <div class="field">
+              <label>🚦 MARGEM INICIAL</label>
+              <select id="margin"><option value="1">1 minuto</option><option value="3">3 minutos</option><option value="5" selected>5 minutos</option><option value="10">10 minutos</option></select>
+            </div>
+            <div class="field">
+              <label>🪟 JANELA ESTATÍSTICA</label>
+              <select id="tolerance"><option value="0">Exata</option><option value="1" selected>±1 minuto</option><option value="2">±2 minutos</option><option value="3">±3 minutos</option></select>
+            </div>
+            <div class="field wide">
+              <label>📈 SINAL DO AVIATOR</label>
+              <div class="quick signal-choice" id="signalChoice">
+                <button type="button" data-signal="1" class="active">AVIATOR 1</button>
+                <button type="button" data-signal="2">AVIATOR 2</button>
+              </div>
+            </div>
+            <div class="field wide minute-filter">
+              <label>🎨 FILTRO - COR DA VELA</label>
+              <div class="minute-filter-buttons" id="colorFilterChoice">
+                <button type="button" data-color="blue" class="active"><strong>🔵 AZUL</strong><small id="colorCountBlue">0</small></button>
+                <button type="button" data-color="purple"><strong>🟣 ROXO</strong><small id="colorCountPurple">0</small></button>
+                <button type="button" data-color="pink"><strong>🌹 ROSA</strong><small id="colorCountPink">0</small></button>
+                <button type="button" data-color="all"><strong>⚪ TODOS</strong><small id="colorCountAll">0</small></button>
+              </div>
+              <label for="colorMinX">MÍNIMO X DO FILTRO</label>
+              <input id="colorMinX" type="number" min="1" step="0.01" value="1.00" placeholder="Ex.: 5.00">
+              <div class="minute-filter-summary" id="minuteFilterSummary">Depois de analisar, os melhores finais de minuto do filtro escolhido aparecerão aqui.</div>
+              <div class="minute-digits" id="minuteDigits">
+                <div class="empty" style="grid-column:1/-1">Aguardando análise.</div>
+              </div>
+            </div>
+          </div>
+          <div class="actions"><button class="primary" id="generateBtn">🔮 GERAR POSSÍVEIS JANELAS</button></div>
+        </section>
+
+        <section class="panel">
+          <div class="section-head"><h2>🚀 Possíveis janelas futuras</h2><span class="pill" id="projectionLabel">Aguardando análise</span></div>
+          <div id="projectionSummary" class="subtle" style="margin-bottom:12px">As projeções aparecem aqui somente depois de uma análise válida.</div>
+          <div class="table-wrap" id="resultsTable"><div class="empty">Nenhuma janela estatística calculada.</div></div>
+        </section>
+
+        <section class="panel" id="verificationPanel">
+          <div class="section-head"><h2>✅ Verificador de resultados</h2><span class="pill" id="verificationLabel">Aguardando lista</span></div>
+          <p class="subtle">Cole abaixo o histórico atualizado das rodadas que já aconteceram. O sistema identifica automaticamente quais janelas já podem ser verificadas. As que ainda não tiverem rodadas dentro da janela ficam como <b>AGUARDANDO</b>.</p>
+          <textarea id="verificationInput" placeholder="Cole aqui o novo histórico...
+Ex.:
+09:15:12
+2,80x
+09:15:41
+1,30x
+09:16:05
+1,10x"></textarea>
+          <div class="status" id="verificationStatus"><span>Encontrados: <b>0</b></span><span>Válidos: <b>0</b></span><span>Ignorados: <b>0</b></span></div>
+          <div class="verification-meta" id="verificationConfig">Gere as possíveis janelas primeiro. Depois cole o histórico atualizado e verifique.</div>
+          <div class="actions"><button class="primary" id="verifyBtn">✅ VERIFICAR RESULTADOS</button><button class="secondary" id="copyVerification">📋 COPIAR RESULTADO</button></div>
+          <div id="verificationOutput" style="margin-top:12px"><div class="empty">A lista de resultados aparecerá aqui.</div></div>
+        </section>
+        <section class="panel">
+          <h2>📤 Exportar</h2>
+          <div class="actions">
+            <button class="secondary" id="exportHistory">📥 HISTÓRICO CSV</button>
+            <button class="secondary" id="exportAnalysis">📥 ANÁLISE CSV</button>
+            <button class="secondary" id="copyProjections">📋 COPIAR JANELAS</button>
+            <button class="secondary" id="copySignalList">📱 COPIAR LISTA</button>
+          </div>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const state = { rows: [], projections: [], analysis: null, signalSource: 1, colorFilter: 'blue', colorMinX: 1, selectedMinuteDigits: Array.from({length:10}, (_, i) => i), parsed: { found: 0, valid: 0, ignored: 0 }, verification: { rows: [], parsed: { found: 0, valid: 0, ignored: 0 }, results: [], config: null, selectedTimes: [] } };
+    const categories = [
+      { max: 1.49, label: '1X–1.49X', color: '#8fa3bf' }, { max: 1.99, label: '1.50X–1.99X', color: '#62b6cb' },
+      { max: 2.99, label: '2X–2.99X', color: '#53e3a6' }, { max: 4.99, label: '3X–4.99X', color: '#ffd166' },
+      { max: 9.99, label: '5X–9.99X', color: '#ff9f68' }, { max: 19.99, label: '10X–19.99X', color: '#ff758f' },
+      { max: 49.99, label: '20X–49.99X', color: '#c084fc' }, { max: 99.99, label: '50X–99.99X', color: '#e879f9' },
+      { max: Infinity, label: '100X+', color: '#f8fafc' }
+    ];
+    function getTargetValue() {
+      const selected = $('target').value;
+      if (selected === 'custom') {
+        const n = Number($('customTarget').value);
+        return Number.isFinite(n) && n > 0 ? String(n) : '2.5';
+      }
+      return selected;
+    }
+    function updateCustomTargetField() {
+      const show = $('target').value === 'custom';
+      $('customTargetField').style.display = show ? 'block' : 'none';
+    }
+    const targetLabel = (target) => ({'2':'2X+','2.5':'2,50X+','5':'5X+','10':'10X+','50':'50X+','100':'100X+','5-10':'5X–10X','10-50':'10X–50X','50-100':'50X–100X'}[target] || (Number.isFinite(Number(target)) ? `${fmt(Number(target), 2).replace('.', ',')}X+` : target));
+    const fmt = (n, digits = 1) => Number(n).toLocaleString('pt-BR', { maximumFractionDigits: digits });
+    const clock = (mins) => { mins = ((Math.round(mins) % 1440) + 1440) % 1440; return `${String(Math.floor(mins / 60)).padStart(2,'0')}:${String(mins % 60).padStart(2,'0')}`; };
+    const category = (x) => categories.find(c => x <= c.max) || categories[categories.length - 1];
+    function targetMatch(value, target) {
+      if (target.includes('-')) { const [a,b] = target.split('-').map(Number); return value >= a && value < b; }
+      return value >= Number(target);
+    }
+    function parseTimeLine(line) {
+      const match = line.trim().match(/^([01]?\d|2[0-3]):([0-5]\d)(?::([0-5]\d))?$/);
+      if (!match) return null;
+      const h = Number(match[1]), m = Number(match[2]), s = Number(match[3] || 0);
+      return { h, m, s, minute: h * 60 + m + s / 60 };
+    }
+    function parseMultiplierLine(line) {
+      const match = line.trim().match(/^(?:[^\d]*)?(\d+(?:[.,]\d+)?)\s*x\s*$/i);
+      if (!match) return null;
+      const mult = Number(match[1].replace(',', '.'));
+      return Number.isFinite(mult) && mult >= 1 ? mult : null;
+    }
+    function makeHistoryRow(time, mult, raw) {
+      return { ...time, mult, raw };
+    }
+    function parseHistory(text) {
+      const lines = text.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
+      const rows = [], seen = new Set();
+      let found = 0, ignored = 0;
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const inlineTime = line.match(/([01]?\d|2[0-3]):([0-5]\d)(?::([0-5]\d))?/);
+        const inlineMult = line.match(/(\d+(?:[.,]\d+)?)\s*x\b/i);
+        let time = parseTimeLine(line), mult = parseMultiplierLine(line), raw = line;
+        if (!time && inlineTime && inlineMult) {
+          time = { h: Number(inlineTime[1]), m: Number(inlineTime[2]), s: Number(inlineTime[3] || 0) };
+          time.minute = time.h * 60 + time.m + time.s / 60;
+          mult = Number(inlineMult[1].replace(',', '.'));
+        }
+        if (time && !mult) {
+          const nextMult = parseMultiplierLine(lines[i + 1] || '');
+          if (nextMult) { mult = nextMult; raw = `${line} · ${lines[++i]}`; }
+        } else if (mult && !time) {
+          const nextTime = parseTimeLine(lines[i + 1] || '');
+          if (nextTime) { time = nextTime; raw = `${line} · ${lines[++i]}`; }
+        }
+        if (!time || !Number.isFinite(mult) || mult < 1) continue;
+        found++;
+        // The copied page can contain the same round in both “Histórico recente”
+        // and “Resultados”. Seconds are preferred when the first copy has them.
+        const key = `${time.h}:${time.m}:${mult}`;
+        const existing = rows.find(r => `${r.h}:${r.m}:${r.mult}` === key);
+        if (existing) {
+          if (existing.s === 0 && time.s > 0) Object.assign(existing, makeHistoryRow(time, mult, raw));
+          ignored++;
+          continue;
+        }
+        rows.push(makeHistoryRow(time, mult, raw));
+      }
+      ignored += Math.max(0, lines.length - found - ignored);
+      return { rows: rows.slice(0, 500), found, valid: Math.min(rows.length, 500), ignored };
+    }
+    function latestHistoryRow(rows) {
+      if (!rows.length) return null;
+      if (rows.length === 1) return rows[0];
+      // Copied casino histories are normally newest-first. Count the direction
+      // instead of comparing only the endpoints, because a pasted page can
+      // cross midnight and can contain a repeated “Resultados” block.
+      const deltas = rows.slice(1).map((row, i) => row.minute - rows[i].minute);
+      const descending = deltas.filter(delta => delta < 0).length >= deltas.filter(delta => delta > 0).length;
+      return descending ? rows[0] : rows[rows.length - 1];
+    }
+    function updateParseStatus(result) {
+      $('parseStatus').innerHTML = `<span>Encontrados: <b>${result.found}</b></span><span>Válidos: <b>${result.valid}</b></span><span>Ignorados: <b>${result.ignored}</b></span>`;
+    }
+    function getPeriod() { return $('period').value === 'custom' ? Math.max(1, Number($('customPeriod').value) || 1) : Number($('period').value); }
+    function colorName(key) { return key === 'blue' ? 'AZUL' : key === 'purple' ? 'ROXO' : key === 'pink' ? 'ROSA' : 'TODOS'; }
+    function rowMatchesColor(row, color = state.colorFilter, minX = state.colorMinX) {
+      const x = Number(minX) || 1;
+      if (row.mult < x) return false;
+      if (color === 'blue') return row.mult < 2;
+      if (color === 'purple') return row.mult >= 2 && row.mult < 10;
+      if (color === 'pink') return row.mult >= 10;
+      return true;
+    }
+    function activeColorRows(rows = state.rows) { return rows.filter(row => rowMatchesColor(row)); }
+    function activeTargetRows() { const target = getTargetValue(); return state.rows.filter(r => targetMatch(r.mult, target)); }
+    function renderMinuteFilter() {
+      const rows = state.rows;
+      const counts = { blue:0, purple:0, pink:0 };
+      rows.forEach(r => { if (r.mult < 2) counts.blue++; else if (r.mult < 10) counts.purple++; else counts.pink++; });
+      $('colorCountBlue').textContent = counts.blue; $('colorCountPurple').textContent = counts.purple; $('colorCountPink').textContent = counts.pink; $('colorCountAll').textContent = rows.length;
+      document.querySelectorAll('#colorFilterChoice button').forEach(b => b.classList.toggle('active', b.dataset.color === state.colorFilter));
+      const filtered = chronologicalRows(rows).filter(row => rowMatchesColor(row));
+      const digits = Array.from({length:10}, (_, digit) => ({ digit, count: filtered.filter(r => r.m % 10 === digit).length }));
+      const max = Math.max(0, ...digits.map(x => x.count));
+      if (!filtered.length) {
+        $('minuteFilterSummary').textContent = `Nenhuma rodada encontrada para ${colorName(state.colorFilter)} com mínimo de ${fmt(state.colorMinX,2)}X.`;
+        $('minuteDigits').innerHTML = '<div class="empty" style="grid-column:1/-1">Nenhuma ocorrência para esse filtro. Ajuste a cor ou o X mínimo.</div>';
+        return;
+      }
+      const best = digits.filter(x => x.count === max && max > 0).map(x => x.digit);
+      const bestText = best.join(', ');
+      const selected = new Set(state.selectedMinuteDigits);
+      $('minuteFilterSummary').textContent = `${filtered.length} rodada(s) no filtro ${colorName(state.colorFilter)} · mínimo ${fmt(state.colorMinX,2)}X. Finais de minuto com mais ocorrências: ${bestText}. Toque nos finais que deseja usar; somente eles serão enviados na lista. Esses dados vêm somente do histórico colado.`;
+      $('minuteDigits').innerHTML = digits.map(x => `<button type="button" class="minute-digit ${x.count === max && max > 0 ? 'best' : ''} ${selected.has(x.digit) ? 'selected' : ''}" data-minute-digit="${x.digit}" aria-pressed="${selected.has(x.digit)}"><span class="digit">${x.digit}</span><span class="count">${x.count}</span><span class="minute-state">${selected.has(x.digit) ? '✓ selecionado' : 'toque para selecionar'}</span></button>`).join('');
+      $('minuteDigits').querySelectorAll('[data-minute-digit]').forEach(btn => btn.addEventListener('click', () => {
+        const digit = Number(btn.dataset.minuteDigit);
+        if (state.selectedMinuteDigits.includes(digit)) {
+          state.selectedMinuteDigits = state.selectedMinuteDigits.filter(x => x !== digit);
+        } else {
+          state.selectedMinuteDigits = [...state.selectedMinuteDigits, digit].sort((a,b) => a-b);
+        }
+        renderMinuteFilter();
+      }));
+    }
+    const clamp = (value, min = 0, max = 1) => Math.max(min, Math.min(max, value));
+    const mean = values => values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0;
+    function median(values) {
+      if (!values.length) return 0;
+      const sorted = [...values].sort((a,b) => a - b), middle = Math.floor(sorted.length / 2);
+      return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
+    }
+    function deviation(values) {
+      if (values.length < 2) return 0;
+      const average = mean(values);
+      return Math.sqrt(mean(values.map(value => (value - average) ** 2)));
+    }
+    function chronologicalRows(rows = state.rows) {
+      if (!rows.length) return [];
+      return latestHistoryRow(rows) === rows[0] ? [...rows].reverse() : [...rows];
+    }
+    function recentRows(rows, size) { return rows.slice(-Math.min(size, rows.length)); }
+    function qualityFor(size) {
+      if (size >= 250) return { label: 'FORTE', factor: 1, color: 'high' };
+      if (size >= 100) return { label: 'BOA', factor: .82, color: 'high' };
+      if (size >= 50) return { label: 'MODERADA', factor: .62, color: 'medium' };
+      if (size >= 30) return { label: 'BAIXA', factor: .42, color: 'medium' };
+      return { label: 'MUITO BAIXA', factor: .2, color: 'low' };
+    }
+    function sequenceInfo(rows, predicate) {
+      let current = 0, maximum = 0;
+      rows.forEach(row => { current = predicate(row) ? current + 1 : 0; maximum = Math.max(maximum, current); });
+      current = 0;
+      for (let i = rows.length - 1; i >= 0 && predicate(rows[i]); i--) current++;
+      return { current, maximum };
+    }
+    function intervalInfo(rows, target) {
+      const positions = rows.map((row, index) => targetMatch(row.mult, target) ? index : -1).filter(index => index >= 0);
+      const intervals = positions.slice(1).map((position, index) => position - positions[index]);
+      const current = positions.length ? rows.length - 1 - positions[positions.length - 1] : rows.length;
+      return { count: positions.length, intervals, average: mean(intervals), median: median(intervals), min: intervals.length ? Math.min(...intervals) : 0, max: intervals.length ? Math.max(...intervals) : 0, deviation: deviation(intervals), current };
+    }
+    function rateFor(rows, target) {
+      return rows.length ? rows.filter(row => targetMatch(row.mult, target)).length / rows.length : 0;
+    }
+    function runAfterRate(rows, target, minimumRun) {
+      let opportunities = 0, hits = 0;
+      for (let i = 0; i < rows.length;) {
+        if (rows[i].mult >= 2) { i++; continue; }
+        let end = i;
+        while (end + 1 < rows.length && rows[end + 1].mult < 2) end++;
+        if (end - i + 1 >= minimumRun && end + 1 < rows.length) {
+          opportunities++;
+          if (rows.slice(end + 1, end + 4).some(row => targetMatch(row.mult, target))) hits++;
+        }
+        i = end + 1;
+      }
+      return { opportunities, hits, rate: opportunities ? hits / opportunities : 0 };
+    }
+    function circularMinuteDistance(a, b) {
+      const difference = Math.abs(a - b) % 60;
+      return Math.min(difference, 60 - difference);
+    }
+    function minuteEvidence(rows, target, offset, tolerance, globalRate) {
+      const center = ((offset % 60) + 60) % 60;
+      const around = radius => rows.filter(row => circularMinuteDistance(row.m + row.s / 60, center) <= radius + .001);
+      const exact = around(0), near = around(Math.max(1, tolerance)), near2 = around(Math.max(2, tolerance)), near3 = around(Math.max(3, tolerance));
+      const block5 = rows.filter(row => Math.floor(row.m / 5) === Math.floor(center / 5));
+      const block10 = rows.filter(row => Math.floor(row.m / 10) === Math.floor(center / 10));
+      const rate = sample => sample.length ? rateFor(sample, target) : globalRate;
+      const weightedSample = exact.length * 1.5 + near.length + near2.length * .5;
+      const weightedRate = weightedSample ? (rate(exact) * exact.length * 1.5 + rate(near) * near.length + rate(near2) * near2.length * .5) / weightedSample : globalRate;
+      return { exact: rate(exact), near: rate(near), near2: rate(near2), near3: rate(near3), block5: rate(block5), block10: rate(block10), weightedRate, sample: near3.length, exactSample: exact.length, block5Sample: block5.length, block10Sample: block10.length };
+    }
+    function stabilityFor(rows, target, globalRate) {
+      const rates = [10, 20, 50, 100, 200].map(size => rateFor(recentRows(rows, size), target)).filter((rate, index) => rows.length >= [10,20,50,100,200][index]);
+      if (rates.length < 2 || globalRate === 0) return { value: .45, rates };
+      return { value: clamp(1 - deviation(rates) / Math.max(globalRate, .05), 0, 1), rates };
+    }
+    function analyzeDataset(rows, target) {
+      const globalRate = rateFor(rows, target), recent10 = recentRows(rows, 10), recent20 = recentRows(rows, 20), recent50 = recentRows(rows, 50);
+      const interval = intervalInfo(rows, target), stability = stabilityFor(rows, target, globalRate), recentRate = rateFor(recent50, target);
+      const variance = Math.max(.0001, globalRate * (1 - globalRate) / Math.max(1, recent50.length));
+      const z = (recentRate - globalRate) / Math.sqrt(variance);
+      const sequences = {
+        below2: sequenceInfo(rows, row => row.mult < 2),
+        below25: sequenceInfo(rows, row => row.mult < 2.5),
+        above25: sequenceInfo(rows, row => row.mult >= 2.5),
+        target: sequenceInfo(rows, row => targetMatch(row.mult, target)),
+        five: sequenceInfo(rows, row => row.mult >= 5),
+        ten: sequenceInfo(rows, row => row.mult >= 10)
+      };
+      const sequenceEvidence = runAfterRate(rows, target, Math.max(2, sequences.below2.current || 2));
+      const quality = qualityFor(rows.length);
+      return { globalRate, recent10: rateFor(recent10, target), recent20: rateFor(recent20, target), recent50: recentRate, interval, stability, z, sequences, sequenceEvidence, quality };
+    }
+    function relativeFactor(value, baseline) {
+      if (!baseline) return value ? .75 : .35;
+      return clamp(.5 + ((value / baseline) - 1) * .25, .15, .85);
+    }
+    function intervalFactor(interval) {
+      if (!interval.average || !interval.deviation) return interval.count >= 2 ? .5 : .35;
+      return clamp(1 - Math.abs(interval.current - interval.median) / ((interval.deviation + 1) * 3), .15, .85);
+    }
+    // Motor interno de padrões: usado apenas para ponderar as janelas.
+    // Os nomes/formações vêm do catálogo mostrado no material enviado; quando uma
+    // regra não é publicada de forma verificável, ela é tratada como heurística
+    // de baixa influência e precisa ser validada pelo próprio histórico.
+    const patternDefs = [
+      { key:'inicioAcompanhamento', name:'Início de Acompanhamento', seq:['B','P','R'], rounds:[1,2,3], weight:.70 },
+      { key:'fechamentoVala', name:'Fechamento de Vala', seq:['R','P','B','B','P'], rounds:[1,2,3], weight:.55 },
+      { key:'semiVala', name:'Semi Vala', seq:['R','P','B','B'], rounds:[1,2,3], weight:.45 },
+      { key:'inversaoDupla', name:'Inversão Dupla', seq:['B','P','B','P'], rounds:[1,2], weight:.45 },
+      { key:'quebraAcompanhamento', name:'Quebra de Acompanhamento', seq:['R','P','B','B','P'], rounds:[1,2,3], weight:.50 },
+      { key:'rosaDupla', name:'Rosa Dupla', seq:['R','R'], rounds:[1,2], weight:.65 },
+      { key:'xadrezPositivo', name:'Xadrez Positivo', seq:['B','P','B','P'], rounds:[1,2], weight:.55 },
+      { key:'xadrezNegativo', name:'Xadrez Negativo', seq:['P','B','P','B'], rounds:[1,2], weight:.50 },
+      { key:'cincoAzuis', name:'5 Azuis', seq:['B','B','B','B','B'], rounds:[1,2,3], weight:.70 },
+      { key:'cincoCasa', name:'5 Casa', house:5, rounds:[5], weight:.60 },
+      { key:'oitoCasa', name:'8 Casa', house:8, rounds:[8], weight:.50 },
+      { key:'onzeCasa', name:'11 Casa', house:11, rounds:[11], weight:.45 },
+      { key:'repeticao', name:'Padrões de Repetição', repeat:true, rounds:[], weight:.65 }
+    ];
+    function rowColor(row) {
+      if (row.mult >= 10) return 'R';
+      if (row.mult >= 2) return 'P';
+      return 'B';
+    }
+    function colorRows(rows) { return rows.map(rowColor); }
+    function endsWithSequence(colors, seq) {
+      if (colors.length < seq.length) return false;
+      const start = colors.length - seq.length;
+      return seq.every((value, i) => colors[start + i] === value);
+    }
+    function lastPinkIndex(colors) {
+      for (let i = colors.length - 1; i >= 0; i--) if (colors[i] === 'R') return i;
+      return -1;
+    }
+    function activePatternRounds(rows, def) {
+      const colors = colorRows(rows), out = [];
+      if (def.seq && endsWithSequence(colors, def.seq)) out.push(...def.rounds);
+      if (def.house) {
+        const lp = lastPinkIndex(colors);
+        if (lp >= 0) {
+          const since = colors.length - 1 - lp;
+          if (since === def.house - 1) out.push(def.house);
+        }
+      }
+      if (def.repeat) {
+        const pinks = colors.map((c,i) => c === 'R' ? i : -1).filter(i => i >= 0);
+        if (pinks.length >= 3) {
+          const a = pinks[pinks.length-2] - pinks[pinks.length-3];
+          const b = pinks[pinks.length-1] - pinks[pinks.length-2];
+          if (Math.abs(a-b) <= 1) out.push(Math.max(1, Math.round(b)));
+        }
+      }
+      return [...new Set(out.filter(n => n >= 1 && n <= 12))];
+    }
+    function patternOccurrences(rows, def) {
+      const colors = colorRows(rows), occurrences = [];
+      for (let i = 0; i < rows.length; i++) {
+        if (def.seq) {
+          const start = i - def.seq.length + 1;
+          if (start >= 0 && def.seq.every((value,j) => colors[start+j] === value)) occurrences.push(i);
+        } else if (def.house) {
+          if (colors[i] === 'R') occurrences.push(i + def.house - 1);
+        } else if (def.repeat) {
+          const pinks = colors.map((c,j) => c === 'R' ? j : -1).filter(j => j >= 0 && j <= i);
+          if (pinks.length >= 3) {
+            const a = pinks[pinks.length-2] - pinks[pinks.length-3];
+            const b = pinks[pinks.length-1] - pinks[pinks.length-2];
+            if (Math.abs(a-b) <= 1 && pinks[pinks.length-1] === i) occurrences.push(i);
+          }
+        }
+      }
+      return occurrences.filter(i => i < rows.length - 1);
+    }
+    function patternConditionalRate(rows, target, def) {
+      const occ = patternOccurrences(rows, def);
+      if (!occ.length) return { rate:0, sample:0 };
+      let hits = 0, tests = 0;
+      occ.forEach(i => {
+        const future = rows.slice(i + 1, i + 4);
+        if (!future.length) return;
+        tests++;
+        if (future.some(r => targetMatch(r.mult, target))) hits++;
+      });
+      return { rate: tests ? hits / tests : 0, sample:tests };
+    }
+    function patternEvidence(rows, target, offset, dataset) {
+      const avgGap = Math.max(.25, mean(rows.slice(1).map((r,i) => Math.max(.1, r.minute - rows[i].minute))) || 1);
+      const futureRound = Math.max(1, Math.round((offset - Math.floor(rows[rows.length-1].minute)) / avgGap));
+      const global = dataset.globalRate;
+      let totalWeight = 0, weighted = 0, activeCount = 0;
+      patternDefs.forEach(def => {
+        const rounds = activePatternRounds(rows, def);
+        if (!rounds.some(r => Math.abs(r - futureRound) <= 1)) return;
+        const evidence = patternConditionalRate(rows, target, def);
+        if (evidence.sample < 3) return;
+        const relative = global > 0 ? clamp(evidence.rate / global, .55, 1.55) : (evidence.rate ? 1.1 : .9);
+        const alignment = rounds.reduce((best,r) => Math.max(best, Math.max(0, 1 - Math.abs(r-futureRound)/3)), 0);
+        const w = def.weight * alignment * Math.min(1, evidence.sample / 12);
+        weighted += relative * w; totalWeight += w; activeCount++;
+      });
+      const factor = totalWeight ? clamp(weighted / totalWeight, .55, 1.55) : 1;
+      return { factor, activeCount, futureRound };
+    }
+
+    function minuteFilterEvidence(offset) {
+      const filtered = activeColorRows(chronologicalRows());
+      if (!filtered.length) return { rate: 0, baseline: 0, count: 0, factor: .35 };
+      const digit = ((Math.floor(offset) % 60) + 60) % 60 % 10;
+      const count = filtered.filter(row => row.m % 10 === digit).length;
+      const rate = count / filtered.length;
+      const baseline = 1 / 10;
+      const factor = baseline ? clamp(rate / baseline, .55, 1.55) : .75;
+      return { rate, baseline, count, factor };
+    }
+    function candidateAnalysis(rows, target, offset, tolerance, dataset) {
+      const minute = minuteEvidence(rows, target, offset, tolerance, dataset.globalRate);
+      const filterMinute = minuteFilterEvidence(offset);
+      const sequenceFactor = dataset.sequenceEvidence.opportunities >= 5 ? relativeFactor(dataset.sequenceEvidence.rate, dataset.globalRate) : .5;
+      const scoreParts = {
+        historical: relativeFactor(dataset.globalRate, dataset.globalRate),
+        recent: relativeFactor(dataset.recent50, dataset.globalRate),
+        minute: relativeFactor(minute.weightedRate, dataset.globalRate),
+        blocks: relativeFactor((minute.block5 + minute.block10) / 2, dataset.globalRate),
+        intervals: intervalFactor(dataset.interval),
+        sequences: sequenceFactor,
+        patterns: patterns.factor,
+        stability: dataset.stability.value,
+        sample: dataset.quality.factor * clamp(.5 + minute.sample / 40, .5, 1)
+      };
+      const score = Math.round(100 * (
+        scoreParts.historical * .16 + scoreParts.recent * .15 + scoreParts.minute * .19 + scoreParts.blocks * .09 +
+        scoreParts.intervals * .11 + scoreParts.sequences * .08 + scoreParts.stability * .12 + scoreParts.sample * .10
+      ));
+      const filteredScore = Math.round(clamp(score * (.90 + filterMinute.factor * .10), 0, 100));
+      const zLabel = dataset.z > 1.5 ? 'acima' : dataset.z < -1.5 ? 'abaixo' : 'próximo';
+      return { ...minute, filterMinute, score: filteredScore, scoreParts, patternFactor: patterns.factor, patternCount: patterns.activeCount, frequency: minute.weightedRate, globalRate: dataset.globalRate, recentRate: dataset.recent50, interval: dataset.interval, stability: dataset.stability.value, z: dataset.z, sequenceEvidence: dataset.sequenceEvidence, quality: dataset.quality, reason: `${minute.sample} observações próximas; filtro ${colorName(state.colorFilter)} mínimo ${fmt(state.colorMinX,2)}X encontrou ${filterMinute.count} ocorrência(s) no final ${((Math.floor(offset)%60)+60)%60%10}; frequência histórica ${fmt(dataset.globalRate * 100)}%; comportamento recente ${zLabel} da média; estabilidade ${fmt(dataset.stability.value * 100)}%.` };
+    }
+    function analyzeMoment() {
+      const panel = $('momentStatus');
+      if (!state.rows.length) {
+        $('momentLabel').textContent = 'Aguardando histórico';
+        $('momentMain').textContent = 'Cole o histórico e clique em analisar.';
+        $('momentSub').textContent = 'O status será calculado somente a partir dos dados inseridos.';
+        $('momentSignal').textContent = '—';
+        $('momentRate').textContent = '—';
+        $('momentInterval').textContent = '—';
+        $('momentReading').textContent = '—';
+        panel.className = 'moment-status';
+        return;
+      }
+
+      const rows = chronologicalRows();
+      const target = getTargetValue();
+      const global = rateFor(rows, target);
+      const recent20 = recentRows(rows, 20);
+      const recent50 = recentRows(rows, 50);
+      const recent100 = recentRows(rows, 100);
+      const recent20Rate = rateFor(recent20, target);
+      const recent50Rate = rateFor(recent50, target);
+      const interval = intervalInfo(rows, target);
+      const stability = stabilityFor(rows, target, global);
+      const seq = sequenceInfo(rows, row => row.mult < 2.5);
+
+      // Leitura de predominância de cores separada do alvo.
+      // Assim, um resultado roxo abaixo de 2,50x continua participando
+      // da leitura de predominância.
+      function colorStats(subset) {
+        const counts = { blue: 0, purple: 0, pink: 0 };
+        subset.forEach(r => {
+          const c = r.mult >= 10 ? 'pink' : (r.mult >= 2 ? 'purple' : 'blue');
+          counts[c]++;
+        });
+        const total = subset.length || 1;
+        return {
+          counts,
+          pct: {
+            blue: counts.blue / total,
+            purple: counts.purple / total,
+            pink: counts.pink / total
+          }
+        };
+      }
+
+      const c50 = colorStats(recent50);
+      const dominant = Object.entries(c50.pct).sort((a,b) => b[1] - a[1])[0];
+      const dominantName = dominant[0] === 'purple' ? 'ROXA' : dominant[0] === 'pink' ? 'ROSA' : 'AZUL';
+      const purpleSupport = c50.pct.purple + c50.pct.pink;
+      const bluePressure = c50.pct.blue;
+      const targetDelta = recent50Rate - global;
+      const colorEdge = purpleSupport - bluePressure;
+
+      let main, signal, reading, cls;
+
+      if (rows.length < 30) {
+        main = '⚠️ MOMENTO INCONCLUSIVO';
+        signal = 'AMOSTRA PEQUENA';
+        reading = `Predominância ${dominantName}`;
+        cls = 'warn';
+      } else if (purpleSupport >= 0.58 && targetDelta >= -0.08 && stability.value >= 0.45) {
+        main = '🟢 MOMENTO MAIS PROPÍCIO';
+        signal = 'FAVORÁVEL';
+        reading = `Predominância ${dominantName}`;
+        cls = 'good';
+      } else if (purpleSupport >= 0.52 && colorEdge >= 0.08) {
+        main = '🟡 MOMENTO PAGANDO';
+        signal = 'MODERADO';
+        reading = `Predominância ${dominantName}`;
+        cls = 'warn';
+      } else if (bluePressure >= 0.60 && targetDelta <= 0) {
+        main = '🔴 MOMENTO RUIM';
+        signal = 'DESFAVORÁVEL';
+        reading = 'Predominância AZUL';
+        cls = 'bad';
+      } else if (bluePressure >= 0.52 && targetDelta < 0) {
+        main = '🟠 MOMENTO RECOLHENDO';
+        signal = 'CAUTELA';
+        reading = 'Predominância AZUL';
+        cls = 'bad';
+      } else if (targetDelta > 0.02) {
+        main = '🟡 MOMENTO PAGANDO';
+        signal = 'MODERADO';
+        reading = `Acima da média · ${dominantName}`;
+        cls = 'warn';
+      } else if (targetDelta < -0.04) {
+        main = '🟠 MOMENTO RECOLHENDO';
+        signal = 'CAUTELA';
+        reading = `Abaixo da média · ${dominantName}`;
+        cls = 'bad';
+      } else {
+        main = '⚪ MOMENTO NEUTRO';
+        signal = 'SEM VANTAGEM CLARA';
+        reading = `Predominância ${dominantName}`;
+        cls = 'warn';
+      }
+
+      const seqText = seq.current ? ` · ${seq.current} abaixo de 2,50X seguidas` : '';
+      $('momentLabel').textContent = signal;
+      $('momentMain').textContent = main;
+      $('momentSub').textContent =
+        `Alvo ${target} · base ${fmt(global * 100)}% · últimos 50: ${fmt(recent50Rate * 100)}% · ` +
+        `cores: 🔵 ${fmt(c50.pct.blue * 100)}% · 🟣 ${fmt(c50.pct.purple * 100)}% · 🌹 ${fmt(c50.pct.pink * 100)}%${seqText}. ` +
+        `Leitura estatística do histórico, não garantia da próxima rodada.`;
+      $('momentSignal').textContent = signal;
+      $('momentRate').textContent = `${fmt(recent20Rate * 100)}% / ${fmt(recent50Rate * 100)}%`;
+      $('momentInterval').textContent = interval.count ? `${interval.current} rodada(s)` : 'sem ocorrência';
+      $('momentReading').textContent = reading;
+      panel.className = `moment-status ${cls}`;
+    }
+    function suggestProtection() {
+      const box = $('protectionPanel')?.querySelector('.protection-box');
+      if (!state.rows.length) {
+        $('protectionLabel').textContent = 'Aguardando análise';
+        $('protectionMain').textContent = 'Cole o histórico e analise para calcular.';
+        $('protectionSub').textContent = 'A sugestão usa a distribuição histórica dos multiplicadores. Não é garantia do próximo resultado.';
+        $('protectionHigh').textContent = '—';
+        $('protectionLow').textContent = '—';
+        $('protectionCoverage').textContent = '—';
+        $('protectionBase').textContent = '—';
+        if (box) box.className = 'protection-box';
+        return;
+      }
+
+      const rows = chronologicalRows();
+      const targetNum = Number.parseFloat(getTargetValue()) || 2;
+      const vals = rows.map(r => Number(r.mult)).filter(Number.isFinite).sort((a,b) => a-b);
+
+      // Suggested "high hand" is a conservative historical quantile,
+      // capped to avoid turning a rare extreme into an aggressive suggestion.
+      const q = (arr, pct) => {
+        if (!arr.length) return targetNum;
+        const i = Math.max(0, Math.min(arr.length - 1, Math.floor((arr.length - 1) * pct)));
+        return arr[i];
+      };
+      const median = q(vals, .50);
+      const q30 = q(vals, .30);
+      const q40 = q(vals, .40);
+
+      // Keep the main hand at the user's selected target.
+      // Protection is suggested from observed low/mid distribution, not prediction.
+      let high = Math.max(1.30, Math.min(targetNum - 0.05, q40));
+      if (targetNum <= 1.30) high = 1.20;
+      high = Math.round(high * 100) / 100;
+
+      const covered = rows.filter(r => r.mult >= high).length;
+      const coverage = rows.length ? covered / rows.length : 0;
+      const low = `${targetNum.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2})}X+`;
+      const highTxt = `${high.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2})}X`;
+
+      let label = 'HISTÓRICO FAVORÁVEL';
+      let cls = 'good';
+      if (coverage < .50) { label = 'CAUTELA'; cls = 'bad'; }
+      else if (coverage < .65) { label = 'MODERADO'; cls = 'warn'; }
+
+      $('protectionLabel').textContent = label;
+      $('protectionMain').textContent = `Sugestão: proteção na mão mais alta em ${highTxt} · mão principal em ${low}`;
+      $('protectionSub').textContent =
+        `Cobertura observada para ${highTxt}: ${fmt(coverage * 100)}% em ${rows.length} rodadas. ` +
+        `Mediana histórica: ${median.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2})}X. ` +
+        `Use isso como referência estatística, não como garantia da próxima rodada.`;
+      $('protectionHigh').textContent = highTxt;
+      $('protectionLow').textContent = low;
+      $('protectionCoverage').textContent = `${fmt(coverage * 100)}%`;
+      $('protectionBase').textContent = `${rows.length} rodadas`;
+      if (box) box.className = `protection-box ${cls}`;
+    }
+
+    function generateProjections() {
+      state.projections = [];
+      const qty = Math.max(0, Math.min(30, Number($('quantity').value) || 0));
+      const target = getTargetValue(), matches = activeTargetRows();
+      if (!state.rows.length || qty === 0) { renderProjections(); return; }
+      if (!matches.length) { $('projectionSummary').textContent = `Nenhuma ocorrência real de ${targetLabel(target)} foi encontrada no histórico. Dados insuficientes para diferenciar janelas.`; renderProjections(); return; }
+      const ordered = chronologicalRows(), dataset = analyzeDataset(ordered, target);
+      const last = ordered[ordered.length - 1], start = Math.floor(last.minute) + Number($('margin').value), end = Math.floor(last.minute) + getPeriod();
+      const tolerance = Number($('tolerance').value), globalRate = dataset.globalRate;
+      const candidates = [];
+      const selectedDigits = new Set(state.selectedMinuteDigits);
+      if (!selectedDigits.size) {
+        $('projectionSummary').textContent = 'Selecione pelo menos um final de minuto para gerar os sinais.';
+        renderProjections();
+        return;
+      }
+      // Sempre cria candidatos para toda a janela futura, mas somente nos
+      // finais de minuto selecionados pelo usuário. O motor de padrões
+      // apenas melhora a pontuação; ele nunca pode bloquear a geração da lista.
+      for (let offset = start; offset <= end; offset++) {
+        const minuteDigit = ((Math.floor(offset) % 60) + 60) % 60 % 10;
+        if (!selectedDigits.has(minuteDigit)) continue;
+        try {
+          const metrics = candidateAnalysis(ordered, target, offset, tolerance, dataset);
+          candidates.push({ offset, ...metrics, nearbyMatches: Math.round((Number(metrics.frequency) || 0) * (Number(metrics.sample) || 0)), last });
+        } catch (_) {
+          // Fallback: se alguma heurística de padrão falhar, ainda geramos a
+          // janela usando a estatística global do histórico.
+          const center = ((offset % 60) + 60) % 60;
+          const around = ordered.filter(row => circularMinuteDistance(row.m + row.s / 60, center) <= Math.max(1, tolerance));
+          const freq = around.length ? rateFor(around, target) : dataset.globalRate;
+          const score = Math.round(clamp(50 + ((freq - dataset.globalRate) * 100), 20, 85));
+          const filterMinute = minuteFilterEvidence(offset);
+          const filteredScore = Math.round(clamp(score * (.90 + filterMinute.factor * .10), 0, 100));
+          candidates.push({
+            offset,
+            score: filteredScore,
+            filterMinute,
+            frequency: freq,
+            globalRate: dataset.globalRate,
+            sample: around.length,
+            quality: dataset.quality,
+            stability: dataset.stability.value,
+            interval: dataset.interval,
+            patternCount: 0,
+            confidence: 'BAIXA',
+            last
+          });
+        }
+      }
+      // Inclui o fator dos padrões no score, sem deixar que ele impeça a lista.
+      candidates.forEach(c => {
+        if (Number.isFinite(c.score) && Number.isFinite(c.patternFactor)) {
+          c.score = Math.round(clamp(c.score * (0.90 + c.patternFactor * 0.10), 0, 100));
+        }
+      });
+      candidates.sort((a,b) => (Number(b.score) || 0) - (Number(a.score) || 0) || (Number(b.frequency) || 0) - (Number(a.frequency) || 0) || a.offset - b.offset);
+      const picked = [], minGap = Math.max(1, Math.floor((end - start + 1) / Math.max(qty * 2, 2)));
+      for (const c of candidates) if (picked.every(p => Math.abs(p.offset - c.offset) >= minGap)) { picked.push(c); if (picked.length === qty) break; }
+      for (const c of candidates) if (picked.length < qty && !picked.some(p => p.offset === c.offset)) picked.push(c);
+      picked.sort((a,b) => a.offset - b.offset);
+      state.projections = picked.map((p) => ({
+        ...p, time: clock(p.offset), target: targetLabel(target),
+        confidence: p.quality.factor >= .82 && p.sample >= 20 && p.stability >= .65 && p.score >= 68 ? 'ALTA' : p.quality.factor >= .42 && p.sample >= 8 && p.score >= 50 ? 'MÉDIA' : 'BAIXA'
+      }));
+      state.verification.results = [];
+      // Guarda o instante exato em que a lista foi gerada. Isso permite ao
+      // verificador distinguir uma janela futura de uma rodada antiga com o
+      // mesmo minuto (ex.: 23:46 de um histórico anterior).
+      state.verification.config = { target, tolerance, signalSource: state.signalSource, colorFilter: state.colorFilter, colorMinX: state.colorMinX, selectedMinuteDigits: [...state.selectedMinuteDigits], protectionHigh: $('protectionHigh').textContent, protectionLow: $('protectionLow').textContent, generatedAt: Date.now(), lastHistoryMinute: Math.floor(last.minute) };
+      renderVerification();
+      $('projectionSummary').textContent = `${state.projections.length} janela(s) gerada(s) a partir do histórico analisado.`;
+      renderProjections();
+    }
+    function renderMetrics() {
+      const rows = state.rows, max = rows.length ? Math.max(...rows.map(r => r.mult)) : 0, target = getTargetValue(), occurrences = rows.filter(row => targetMatch(row.mult, target)).length;
+      const rate = rows.length ? occurrences / rows.length * 100 : 0;
+      $('metrics').innerHTML = [
+        ['📊 RODADAS ANALISADAS', rows.length || '0', 'cyan'], ['🔥 MAIOR MULTIPLICADOR', max ? `${fmt(max,2)}x` : '—', 'purple'],
+        [`🎯 OCORRÊNCIAS ${targetLabel(target)}`, occurrences, 'yellow'], ['📈 FREQUÊNCIA HISTÓRICA', rows.length ? `${fmt(rate)}%` : '—', 'green']
+      ].map(x => `<div class="metric ${x[2]}"><div class="caption">${x[0]}</div><div class="value">${x[1]}</div></div>`).join('');
+    }
+    function renderProfessionalSummary() { return; }
+    function renderProjections() {
+      $('projectionLabel').textContent = state.projections.length ? '' : 'Aguardando análise';
+      if (!state.projections.length) { $('resultsTable').innerHTML = '<div class="empty">Nenhuma janela estatística calculada.</div>'; return; }
+      $('resultsTable').innerHTML = `<div class="signal-list">${state.projections.map((p) => `<div class="projection-row"><span class="projection-time">${p.time}</span><span class="projection-target">${p.target}</span><span class="projection-score">${p.score}/100</span></div>`).join('')}</div>`;
+    }
+    function verificationMinuteFromTime(text) {
+      const match = String(text || '').match(/^(\d{1,2}):(\d{2})/);
+      if (!match) return null;
+      return Number(match[1]) * 60 + Number(match[2]);
+    }
+    function verificationResultForProjection(projection, rows) {
+      const config = state.verification.config || { target: getTargetValue(), tolerance: Number($('tolerance').value) };
+      const center = verificationMinuteFromTime(projection.time);
+      if (center === null) return { status: 'AGUARDANDO', matches: [], considered: 0 };
+      const tolerance = Math.max(0, Number(config.tolerance) || 0);
+
+      // A verificação é feita POR MINUTO, e não por segundos.
+      // Ex.: um sinal em 08:01 considera TODAS as rodadas de 08:01,
+      // independentemente de serem 1, 2, 4, 5 ou mais velas nesse minuto.
+      // A primeira rodada de 08:02 encerra o minuto 08:01.
+      const ordered = chronologicalRows(rows);
+      const latest = ordered[ordered.length - 1];
+      const base = Number(config.lastHistoryMinute);
+      if (!latest || !Number.isFinite(base)) return { status: 'AGUARDANDO', matches: [], considered: 0 };
+
+      const forward = (from, to) => {
+        let d = Math.floor(Number(to)) - Math.floor(Number(from));
+        while (d < 0) d += 1440;
+        return d;
+      };
+
+      const centerElapsed = forward(base, center);
+      const latestElapsed = forward(base, latest.minute);
+      const windowStart = Math.max(0, centerElapsed - tolerance);
+      const windowEndMinute = centerElapsed + tolerance;
+
+      // O histórico só precisa ter chegado ao ÚLTIMO MINUTO da janela.
+      // Não usamos segundos para decidir AGUARDANDO/WIN/LOSS.
+      // Assim, quando aparece 08:02, o sinal exato de 08:01 já pode ser
+      // resolvido usando todas as velas que pertencem a 08:01.
+      if (latestElapsed < windowEndMinute) {
+        return { status: 'AGUARDANDO', matches: [], considered: 0 };
+      }
+
+      // Agrupa pela minutagem: segundos são ignorados de propósito.
+      // Todas as velas dos minutos da janela entram na avaliação.
+      const considered = rows.filter(row => {
+        const elapsed = forward(base, row.minute);
+        return elapsed >= windowStart && elapsed <= windowEndMinute;
+      });
+
+      // WIN depende EXCLUSIVAMENTE do X configurado no analisador.
+      // Ex.: configurado 2,50X+ => qualquer vela abaixo de 2,50X não é WIN.
+      // Se houver quatro velas em 08:01 e uma delas atingir 2,50X+, é WIN.
+      const targetForVerification = config.target || getTargetValue();
+      const matches = considered.filter(row => targetMatch(row.mult, targetForVerification));
+      if (!considered.length) return { status: 'LOSS', matches: [], considered: 0 };
+      return { status: matches.length ? 'WIN' : 'LOSS', matches, considered: considered.length };
+    }
+    function renderVerification() {
+      const output = $('verificationOutput');
+      if (!state.projections.length) {
+        $('verificationLabel').textContent = 'Aguardando lista';
+        $('verificationConfig').textContent = 'Gere as possíveis janelas primeiro. Depois cole o histórico atualizado e verifique.';
+        output.innerHTML = '<div class="empty">A lista de resultados aparecerá aqui.</div>';
+        return;
+      }
+      const config = state.verification.config || {};
+      const windowText = Number(config.tolerance) === 0 ? 'janela exata' : `janela ±${Number(config.tolerance)} minuto${Number(config.tolerance) > 1 ? 's' : ''}`;
+      $('verificationLabel').textContent = state.verification.results.length ? 'Resultado calculado' : 'Pronto para verificar';
+      $('verificationConfig').innerHTML = `Configuração usada: <b>${targetLabel(config.target || getTargetValue())}</b> · ${windowText} · Aviator ${config.signalSource || state.signalSource} · filtro ${colorName(config.colorFilter || state.colorFilter)}. Proteção/mão: ${config.protectionHigh || '—'} · ${config.protectionLow || '—'}.`;
+      if (!state.verification.results.length) {
+        output.innerHTML = '<div class="empty">Cole o histórico atualizado e toque em “VERIFICAR RESULTADOS”.</div>';
+        return;
+      }
+      const wins = state.verification.results.filter(r => r.status === 'WIN').length;
+      const losses = state.verification.results.filter(r => r.status === 'LOSS').length;
+      const waiting = state.verification.results.filter(r => r.status === 'AGUARDANDO').length;
+      output.innerHTML = `<div class="detail"><strong>Resumo: ${wins} WIN · ${losses} LOSS · ${waiting} AGUARDANDO</strong><small>Uma janela só é marcada como WIN/LOSS quando existe pelo menos uma vela dentro da janela configurada no histórico atualizado. Se ainda não houver rodada naquela janela, fica AGUARDANDO.</small></div><div class="verification-results">${state.verification.results.map(r => `<div class="verification-row"><span class="verification-time">${r.time}</span><span class="verification-target">${r.target}</span><span class="verification-target">${r.score}/100</span><span class="verification-result ${r.status === 'WIN' ? 'win' : r.status === 'LOSS' ? 'loss' : 'waiting'}">${r.status}</span></div>`).join('')}</div>`;
+    }
+    function verifyResults() {
+      if (!state.projections.length) { alert('Gere as possíveis janelas primeiro.'); return; }
+      const parsed = parseHistory($('verificationInput').value);
+      state.verification.rows = parsed.rows;
+      state.verification.parsed = parsed;
+      $('verificationStatus').innerHTML = `<span>Encontrados: <b>${parsed.found}</b></span><span>Válidos: <b>${parsed.valid}</b></span><span>Ignorados: <b>${parsed.ignored}</b></span>`;
+      if (!parsed.rows.length) { state.verification.results = []; renderVerification(); alert('Cole um histórico atualizado válido para verificar.'); return; }
+      state.verification.selectedTimes = [];
+      state.verification.results = state.projections.map(p => {
+        const result = verificationResultForProjection(p, parsed.rows);
+        return { time: p.time, target: p.target, score: p.score, status: result.status, matches: result.matches, considered: result.considered };
+      });
+      renderVerification();
+    }
+    function verificationListText() {
+      if (!state.verification.results.length) return '';
+      const lines = ['📋 RESULTADO DOS SINAIS', `📈 Gráfico: AVIATOR ${state.verification.config?.signalSource || state.signalSource}`, ''];
+      state.verification.results.forEach(r => lines.push(`⏰ ${r.time} · ${r.target} · ${r.score}/100 · ${r.status}`));
+      const wins = state.verification.results.filter(r => r.status === 'WIN').length;
+      const losses = state.verification.results.filter(r => r.status === 'LOSS').length;
+      const waiting = state.verification.results.filter(r => r.status === 'AGUARDANDO').length;
+      lines.push('', `✅ WIN: ${wins}`, `❌ LOSS: ${losses}`, `⏳ AGUARDANDO: ${waiting}`);
+      return lines.join('\n');
+    }
+    function updateVerificationStatus() {
+      const parsed = parseHistory($('verificationInput').value);
+      $('verificationStatus').innerHTML = `<span>Encontrados: <b>${parsed.found}</b></span><span>Válidos: <b>${parsed.valid}</b></span><span>Ignorados: <b>${parsed.ignored}</b></span>`;
+    }
+    function analyze() {
+      const result = parseHistory($('historyInput').value); state.rows = result.rows; state.parsed = result; state.projections = []; updateParseStatus(result); renderMetrics(); renderProfessionalSummary(); analyzeMoment(); suggestProtection(); renderMinuteFilter(); renderProjections();
+    }
+    function download(name, content) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([content], {type:'text/csv;charset=utf-8'})); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 500); }
+    function settingsSnapshot() {
+      return { target: $('target').value, customTarget: $('customTarget').value, quantity: $('quantity').value, period: $('period').value, customPeriod: $('customPeriod').value, margin: $('margin').value, tolerance: $('tolerance').value, signalSource: state.signalSource, colorFilter: state.colorFilter, colorMinX: state.colorMinX, selectedMinuteDigits: state.selectedMinuteDigits };
+    }
+    function restoreSettings(settings) {
+      if (!settings) return;
+      ['target','quantity','period','customPeriod','margin','tolerance'].forEach(key => { if (settings[key] !== undefined && $(key)) $(key).value = settings[key]; });
+      if (settings.signalSource === 1 || settings.signalSource === 2) {
+        state.signalSource = settings.signalSource;
+        document.querySelectorAll('#signalChoice button').forEach(x => x.classList.toggle('active', Number(x.dataset.signal) === state.signalSource));
+      }
+      if (['blue','purple','pink','all'].includes(settings.colorFilter)) state.colorFilter = settings.colorFilter;
+      if (settings.colorMinX !== undefined && Number.isFinite(Number(settings.colorMinX))) state.colorMinX = Math.max(1, Number(settings.colorMinX));
+      if (Array.isArray(settings.selectedMinuteDigits)) state.selectedMinuteDigits = settings.selectedMinuteDigits.map(Number).filter(x => Number.isInteger(x) && x >= 0 && x <= 9).filter((x, i, a) => a.indexOf(x) === i).sort((a,b) => a-b);
+      $('colorMinX').value = state.colorMinX;
+      document.querySelectorAll('#colorFilterChoice button').forEach(x => x.classList.toggle('active', x.dataset.color === state.colorFilter));
+      $('customPeriodField').style.display = $('period').value === 'custom' ? 'grid' : 'none';
+      updateCustomTargetField();
+      renderMetrics(); renderMinuteFilter();
+    }
+    const csvCell = value => `"${String(value ?? '').replace(/"/g, '""')}"`;
+    $('historyInput').addEventListener('input', () => updateParseStatus(parseHistory($('historyInput').value)));
+    $('analyzeBtn').addEventListener('click', analyze); $('generateBtn').addEventListener('click', generateProjections);
+    $('period').addEventListener('change', () => $('customPeriodField').style.display = $('period').value === 'custom' ? 'grid' : 'none');
+    ['target','customTarget','quantity','period','customPeriod','margin','tolerance'].forEach(id => $(id).addEventListener('change', () => { updateCustomTargetField(); state.projections = []; state.verification.results = []; renderProjections(); renderVerification(); renderMetrics(); if (state.rows.length) { renderProfessionalSummary(); analyzeMoment(); suggestProtection(); renderMinuteFilter(); } }));
+    updateCustomTargetField();
+    $('colorMinX').addEventListener('input', () => { state.colorMinX = Math.max(1, Number($('colorMinX').value) || 1); state.projections = []; state.verification.results = []; renderProjections(); renderVerification(); renderMinuteFilter(); });
+    document.querySelectorAll('#colorFilterChoice button').forEach(b => b.addEventListener('click', () => {
+      state.colorFilter = b.dataset.color;
+      state.projections = []; state.verification.results = []; renderProjections(); renderVerification();
+      document.querySelectorAll('#colorFilterChoice button').forEach(x => x.classList.toggle('active', x === b));
+      renderMinuteFilter();
+    }));
+    document.querySelectorAll('.quick button').forEach(b => b.addEventListener('click', () => { $('quantity').value = b.dataset.value; document.querySelectorAll('.quick button').forEach(x => x.classList.remove('active')); b.classList.add('active'); }));
+    document.querySelectorAll('#signalChoice button').forEach(b => b.addEventListener('click', () => {
+      state.signalSource = Number(b.dataset.signal);
+      state.projections = []; state.verification.results = []; renderProjections(); renderVerification();
+      document.querySelectorAll('#signalChoice button').forEach(x => x.classList.toggle('active', x === b));
+    }));
+    $('verifyBtn').addEventListener('click', verifyResults);
+    $('verificationInput').addEventListener('input', updateVerificationStatus);
+    $('copyVerification').addEventListener('click', async () => {
+      const text = verificationListText();
+      if (!text) { alert('Verifique os resultados primeiro.'); return; }
+      try { await navigator.clipboard.writeText(text); alert('Resultado copiado.'); } catch (_) { const area = document.createElement('textarea'); area.value = text; document.body.appendChild(area); area.select(); document.execCommand('copy'); area.remove(); alert('Resultado copiado.'); }
+    });
+    $('saveBtn').addEventListener('click', () => { localStorage.setItem('analyzeitorHistory', $('historyInput').value); localStorage.setItem('analyzeitorSettings', JSON.stringify(settingsSnapshot())); alert('Histórico e configurações salvos neste navegador.'); });
+    $('loadBtn').addEventListener('click', () => { $('historyInput').value = localStorage.getItem('analyzeitorHistory') || localStorage.getItem('aviatorAnalyzerHistory') || ''; try { restoreSettings(JSON.parse(localStorage.getItem('analyzeitorSettings') || 'null')); } catch (_) {} updateParseStatus(parseHistory($('historyInput').value)); if ($('historyInput').value) analyze(); });
+    $('clearBtn').addEventListener('click', () => { $('historyInput').value = ''; state.rows = []; state.projections = []; state.analysis = null; state.selectedMinuteDigits = Array.from({length:10}, (_, i) => i); state.verification = { rows: [], parsed: { found: 0, valid: 0, ignored: 0 }, results: [], config: null, selectedTimes: [] }; updateParseStatus({found:0,valid:0,ignored:0}); renderMetrics(); renderProjections(); renderMinuteFilter(); analyzeMoment(); suggestProtection(); renderVerification(); $('verificationInput').value = ''; state.verification.selectedTimes = []; updateVerificationStatus(); });
+    $('exportHistory').addEventListener('click', () => download('analyzeitor-historico.csv', 'horario,multiplicador,categoria\n' + state.rows.map(r => `${clock(r.minute)},${r.mult},${csvCell(category(r.mult).label)}`).join('\n')));
+    $('exportAnalysis').addEventListener('click', () => download('analyzeitor-analise.csv', 'horario,alvo,score,frequencia_observada,amostra,confianca,intervalo_atual,intervalo_medio,estabilidade,motivo\n' + state.projections.map(p => [p.time,p.target,p.score,`${fmt(p.frequency*100)}%`,p.sample,p.confidence,p.interval.current,p.interval.average ? fmt(p.interval.average) : '',`${fmt(p.stability*100)}%`,p.reason].map(csvCell).join(',')).join('\n')));
+    function signalListText() {
+      if (!state.projections.length) return '';
+      const firstTarget = state.projections[0]?.target || '5X A 100X';
+      const lines = [
+        `📋 LISTA DE SINAIS ${firstTarget}`,
+        `📈 Gráfico: AVIATOR ${state.signalSource}`,
+        '',
+        '🎯 Horários indicado',
+        ''
+      ];
+      state.projections.forEach((p) => {
+        lines.push(`⏰ ${p.time}`);
+      });
+      lines.push(
+        '',
+        'Entre 1 min antes, durante o min e 1 min após',
+        '➡️ Proteção no 1.30x com o seu valor mais alto',
+        '',
+        '⚠️ Jogue com responsabilidade',
+        'Possíveis janelas estatísticas. Não há garantia de resultado.'
+      );
+      return lines.join('\n');
+    }
+    $('copyProjections').addEventListener('click', async () => {
+      const text = state.projections.map(p => `${p.time}\t${p.target}\t${p.score}`).join('\n');
+      if (text) { await navigator.clipboard?.writeText(text); alert('Lista copiada.'); }
+    });
+    $('copySignalList').addEventListener('click', async () => {
+      const text = signalListText();
+      if (!text) { alert('Gere as possíveis janelas primeiro.'); return; }
+      try {
+        await navigator.clipboard.writeText(text);
+        alert('Lista pronta para colar no WhatsApp ou Telegram foi copiada.');
+      } catch (_) {
+        const area = document.createElement('textarea');
+        area.value = text;
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand('copy');
+        area.remove();
+        alert('Lista pronta para colar no WhatsApp ou Telegram foi copiada.');
+      }
+    });
+    renderMetrics();
+    analyzeMoment();
+    suggestProtection();
+    renderVerification();
+    updateVerificationStatus();
+  </script>
+</body>
+</html>
